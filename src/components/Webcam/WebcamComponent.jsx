@@ -16,8 +16,21 @@ import "./WebcamComponent.scss";
         const imageSrc = webcamRef.current.getScreenshot();
         setCapturedImage(imageSrc);
 
-        // Cargar el modelo
-        const model = await tf.loadLayersModel("/model/model.json");
+
+        class L2 {
+          static className = "L2";
+         
+          constructor(config) {
+            return tf.regularizers.l1l2(config);
+          }
+        }
+        tf.serialization.registerClass(L2);
+
+        await tf.ready();
+
+        const model = await tf.loadLayersModel("/model/model.json", {
+          customObjects: { l2: tf.regularizers.l2 },
+        });
 
         // Preprocesar la imagen
         const img = new Image();
