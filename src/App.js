@@ -1,12 +1,25 @@
-import './App.css';
-import WebcamComponent from './components/WebcamComponent';
+/* App.js */
 
+import React, { useState } from 'react';
+import WebcamComponent from './components/Webcam/WebcamComponent';
+import './App.scss';
 
 function App() {
+  const [showWebcam, setShowWebcam] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowWebcam(!showWebcam);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <WebcamComponent />
+        <div className="button-wrapper">
+          <button className="button-styled" onClick={handleButtonClick}>
+            {showWebcam ? 'Cerrar Cámara' : 'Mostrar Webcam'}
+          </button>
+        </div>
+        {showWebcam && <WebcamComponent />}
       </header>
     </div>
   );
