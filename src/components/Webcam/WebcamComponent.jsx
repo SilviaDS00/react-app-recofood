@@ -1,56 +1,21 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
-import * as tf from "@tensorflow/tfjs";
+import PredictionComponent from "../../Prediction/Prediction";
 import "./WebcamComponent.scss";
 
-
-    const WebcamComponent = () => {
-      const webcamRef = useRef(null);
-      const [capturedImage, setCapturedImage] = useState(null);
-      const [loading, setLoading] = useState(false);
-      const [prediction, setPrediction] = useState("");
-
-      const capture = async () => {
-        setLoading(true);
-        const imageSrc = webcamRef.current.getScreenshot();
-        setCapturedImage(imageSrc);
+const WebcamComponent = () => {
+  const webcamRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
 
-        class L2 {
-          static className = "L2";
-         
-          constructor(config) {
-            return tf.regularizers.l1l2(config);
-          }
-        }
-        tf.serialization.registerClass(L2);
 
-        await tf.ready();
-
-        const model = await tf.loadLayersModel("/model/model.json", {
-          customObjects: { l2: tf.regularizers.l2 },
-        });
-
-        // Preprocesar la imagen
-        const img = new Image();
-        img.src = imageSrc;
-        await img.decode();
-        const tensor = tf.browser
-          .fromPixels(img)
-          .resizeNearestNeighbor([224, 224])
-          .toFloat()
-          .expandDims();
-
-        // Realizar la predicción
-        const predictions = await model.predict(tensor).data();
-        const maxPrediction = Math.max(...predictions);
-        const predictedClass = predictions.indexOf(maxPrediction);
-
-        setPrediction(`La comida es de la clase: ${predictedClass}`);
-
-        setLoading(false);
-      };
-
+  const capture = async () => {
+    setLoading(true);
+    const imageSrc = webcamRef.current.getScreenshot();
+    setCapturedImage(imageSrc);
+    setLoading(false);
+  };
 
   return (
     <div className="webcam-container">
@@ -79,7 +44,7 @@ import "./WebcamComponent.scss";
           >
             Descargar Imagen
           </a>
-          <p>{prediction}</p>
+          <PredictionComponent imageSrc={capturedImage} />
         </div>
       )}
     </div>
