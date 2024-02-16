@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import PredictionComponent from "../../Prediction/Prediction";
 import "./WebcamComponent.scss";
 
@@ -47,16 +47,15 @@ const WebcamComponent = () => {
     <div className="webcam-container">
       {showWebcam ? (
         <>
-        <button onClick={closeWebcam} className="close-webcam-button">
+          <button onClick={closeWebcam} className="close-webcam-button">
             Cerrar Cámara
-        </button>
+          </button>
           <Webcam
             audio={false}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             className="webcam"
           />
-          
         </>
       ) : null}
       {!showWebcam && !capturedImage && (
@@ -73,19 +72,18 @@ const WebcamComponent = () => {
         <div className="captured-image-container">
           <h2>Imagen Capturada:</h2>
           <img src={capturedImage} alt="Captured" className="captured-image" />
+          {capturedImage && !showPrediction && (
+            <button onClick={togglePrediction} className="prediction-button">
+              Ver Predicción
+            </button>
+          )}
           <button onClick={deleteCapture} className="delete-button">
             Repetir imagen
           </button>
-          {showPrediction && (
-            <PredictionComponent imageSrc={capturedImage} />
-          )}
+          {showPrediction && <PredictionComponent imageSrc={capturedImage} />}
         </div>
       )}
-      {capturedImage && !showPrediction && (
-        <button onClick={togglePrediction} className="prediction-button">
-          Ver Predicción
-        </button>
-      )}
+
       {loading && (
         <p className="loading-message">Espera mientras se carga la webcam...</p>
       )}

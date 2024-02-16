@@ -13,6 +13,8 @@
   .selected-image-container {
     position: relative;
     text-align: center;
+    display: flex;
+    flex-direction: column;
 
     .selected-image {
       max-width: 100%;
@@ -59,6 +61,17 @@
   }
 }
 
+.prediction-button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
 .image-upload-input {
   display: none; // Oculta el input original
 }
@@ -87,5 +100,5 @@
 .custom-image-upload-label {
   display: inline-block;
   cursor: pointer;
-  margin-right: 10px;
+  margin-bottom: 2rem;  
 }

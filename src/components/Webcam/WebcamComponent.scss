@@ -13,7 +13,7 @@
   margin-bottom: 10px;
 }
 
-.capture-button, .toggle-webcam-button, .prediction-button {
+.capture-button, .toggle-webcam-button {
   padding: 10px;
   font-size: 16px;
   background-color: #4caf50;
@@ -24,8 +24,17 @@
   border-radius: 5px;
 }
 
-.capture-button:hover, .toggle-webcam-button:hover, .prediction-button:hover {
+.capture-button:hover, .toggle-webcam-button:hover {
   background-color: #45a049;
+}
+
+.prediction-button{
+  background-color: #3498db;
+  margin-bottom: 0;
+  width: 100%;
+  &:hover {
+    background-color: #45a049;
+  }
 }
 
 .delete-button, .close-webcam-button {

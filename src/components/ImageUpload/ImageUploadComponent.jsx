@@ -1,12 +1,13 @@
-// ImageUploadComponent.jsx
-
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import PredictionComponent from "../../Prediction/Prediction";
 import "./ImageUploadComponent.scss";
 
 const ImageUploadComponent = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPrediction, setShowPrediction] = useState(false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -14,6 +15,7 @@ const ImageUploadComponent = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result);
+        setShowPrediction(false);
       };
       reader.readAsDataURL(file);
     }
@@ -21,13 +23,14 @@ const ImageUploadComponent = () => {
 
   const handleUpload = () => {
     setLoading(true);
-    // Aquí puedes realizar cualquier lógica de procesamiento o predicción
-    // utilizando el componente de predicción (PredictionComponent)
     setLoading(false);
+    setShowPrediction(true);
   };
 
   const handleDelete = () => {
     setSelectedImage(null);
+    setLoading(false);
+    setShowPrediction(false);
   };
 
   return (
@@ -37,7 +40,7 @@ const ImageUploadComponent = () => {
         accept="image/*"
         onChange={handleImageChange}
         className="image-upload-input"
-        id="fileInput" // Asociamos el id para el label
+        id="fileInput"
       />
       <label htmlFor="fileInput" className="custom-image-upload-label">
         <div className="custom-image-upload">Seleccionar Imagen</div>
@@ -46,19 +49,19 @@ const ImageUploadComponent = () => {
         <div className="selected-image-container">
           <img src={selectedImage} alt="Selected" className="selected-image" />
           <div className="button-container">
-            <button onClick={handleUpload} className="upload-button">
-              {loading ? "Cargando..." : "Subir Imagen"}
-            </button>
             <button onClick={handleDelete} className="delete-button">
-              Borrar Imagen
+              <FontAwesomeIcon icon={faTrash} /> {/* Ícono de borrado */}
             </button>
           </div>
+          <button onClick={handleUpload} className="prediction-button">
+            Procesar Imagen
+          </button>
           {loading && (
             <p className="loading-message">
               Espera mientras se procesa la imagen...
             </p>
           )}
-          <PredictionComponent imageSrc={selectedImage} />
+          {showPrediction && <PredictionComponent imageSrc={selectedImage} />}
         </div>
       )}
     </div>
