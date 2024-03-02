@@ -20,7 +20,7 @@ export function ProfileHistory() {
         console.error(error);
       }
     })();
-  }, []);
+  }, [user.id]);
 
   return (
     <div>
