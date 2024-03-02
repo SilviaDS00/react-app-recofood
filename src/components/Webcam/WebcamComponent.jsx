@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import PredictionComponent from "../../Prediction/Prediction";
 import "./WebcamComponent.scss";
+import Prediction from "../Predictions/Prediction";
+import ShowPrediction from "../Predictions/ShowPrediction";
 
 const WebcamComponent = () => {
   const webcamRef = useRef(null);
@@ -11,23 +12,29 @@ const WebcamComponent = () => {
   const [loading, setLoading] = useState(false);
   const [showWebcam, setShowWebcam] = useState(false);
   const [showPrediction, setShowPrediction] = useState(false);
-
-  useEffect(() => {
-    // Puedes realizar alguna lógica aquí si necesitas hacer algo al cargar el componente
-  }, []); // Dependencia vacía para que solo se ejecute una vez al montar el componente
+  const [predictionResult, setPredictionResult] = useState(null);
 
   const capture = async () => {
     setLoading(true);
     const imageSrc = webcamRef.current.getScreenshot();
     setCapturedImage(imageSrc);
     setLoading(false);
-    setShowWebcam(false); // Ocultar la webcam después de capturar la imagen
+    setShowWebcam(false);
+
+    try {
+      const blob = await fetch(imageSrc).then((res) => res.blob());
+
+      const result = await Prediction(blob);
+      setPredictionResult(result);
+    } catch (error) {
+      console.error("Error al capturar y predecir:", error);
+    }
   };
 
   const deleteCapture = () => {
     setCapturedImage(null);
-    setShowWebcam(true); // Mostrar la webcam después de borrar la foto
-    setShowPrediction(false); // Ocultar el resultado de la predicción al repetir la imagen
+    setShowWebcam(true);
+    setShowPrediction(false);
   };
 
   const toggleWebcam = () => {
@@ -35,12 +42,12 @@ const WebcamComponent = () => {
   };
 
   const togglePrediction = () => {
-    setShowPrediction(true); // Mostrar el resultado de la predicción
+    setShowPrediction(true);
   };
 
   const closeWebcam = () => {
     setShowWebcam(false);
-    setCapturedImage(null); // También puedes borrar la imagen al cerrar la cámara
+    setCapturedImage(null);
   };
 
   return (
@@ -60,7 +67,7 @@ const WebcamComponent = () => {
       ) : null}
       {!showWebcam && !capturedImage && (
         <button onClick={toggleWebcam} className="toggle-webcam-button">
-          Abrir Cámara
+          Escanear comida
         </button>
       )}
       {showWebcam && !capturedImage && (
@@ -80,8 +87,10 @@ const WebcamComponent = () => {
           <button onClick={deleteCapture} className="delete-button">
             Repetir imagen
           </button>
-          {showPrediction && <PredictionComponent imageSrc={capturedImage} />}
         </div>
+      )}
+      {showPrediction && predictionResult && (
+        <ShowPrediction predictionResult={predictionResult} />
       )}
 
       {loading && (

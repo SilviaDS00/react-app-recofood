@@ -1,35 +1,66 @@
-.App {
-  text-align: center;
-}
+@import "./scss/colors.scss";
 
-.App-header {
-  background-color: #ffffff;
-  padding: 20px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: rgb(0, 0, 0);
-}
-
-.button-wrapper {
-  margin-bottom: 20px;
-}
-
-.button-styled {
-  background-color: #61dafb;
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-
+.topBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.3rem 0;
+    z-index: 5;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5rem;
+  }
+  
+.menuItem {
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: black;
   &:hover {
-    background-color: #4fa3d1;
+    text-decoration: underline;
+    color: $orange; /* Color al pasar el ratón */
+  }
+
+  &.active {
+    color: $orange; /* Color cuando está activo */
+  }
+
+  &.visited {
+    color: black; /* Color cuando está visitado */
   }
 }
+  .left {
+    display: flex;
+    gap: 1rem;
+    width: 30%;
+    padding-left: 5rem;
+    a{
+      margin-top: auto;
+      font-size: 1.4rem;
+      color: $orange;
+      font-weight: bold;
+      &:hover {
+        color: $orange; /* Color al pasar el ratón */
+      }
+    }
+  }
 
+  .center {
+    color: black;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 40%;
+    gap: 2rem;
+  }
+  
+  .right {
+    color: black;
+    display: flex;
+    width: 30%;
+    gap: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 5rem;
+  }
+  
